@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <policy>
-  <registryPackage>
-    <name>${title}</name>
-    <description>Harvest package for ${bundle_id}</description>
-  </registryPackage>
 
   <collections>
   #for $collection_id in $collection_ids
