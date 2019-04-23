@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import sys
-from Cheetah.Template import Template
+from jinja2 import Template
 
-with open('pds4_policy_template_cheetah.txt') as template_file:
+with open('pds4_policy_template_jinja.txt') as template_file:
     TEMPLATE=template_file.read()
 
 
@@ -64,9 +64,9 @@ def write_policy(output_file, values):
     Applies the supplied values to the cheetah template, and writes the result
     to a file.
     '''
-    template = Template(TEMPLATE, values)
+    template = Template(TEMPLATE)
     with open(output_file, 'w') as f:
-        f.write(template.respond())
+        f.write(template.render(values))
 
 if __name__ == '__main__':
     sys.exit(main())
