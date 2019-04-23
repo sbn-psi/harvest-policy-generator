@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-import io
 from Cheetah.Template import Template
 
 with open('pds4_policy_template_cheetah.txt') as template_file:
