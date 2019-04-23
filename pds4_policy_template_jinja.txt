@@ -3,8 +3,8 @@
 <policy>
 
   <collections>
-  {% for collection_id in collection_ids -%}
-    <file>{{ basedir }}/{{ collection_id }}/collection_{{ bundle_id }}_{{ collection_id }}.xml</file>
+  {% for collection_file in collection_files -%}
+    <file>{{ collection_file }}</file>
   {% endfor %}
   </collections>
 

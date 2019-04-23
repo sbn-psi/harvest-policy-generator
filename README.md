@@ -15,7 +15,7 @@ pip3 install jinja2
 ## Usage
 
 ```bash
-make_policy.py basedir baseurl bundleid collectionids...
+make_policy.py basedir baseurl bundleid
 ```
 
 `basedir` is the root directory of the bundle
@@ -23,5 +23,3 @@ make_policy.py basedir baseurl bundleid collectionids...
 `baseurl` is the url of the bundle
 
 `bundleid` is the id of the bundle. This is the fourth component of the logical id.
-
-`collectionids` these are the ids of the collections within the bundle. They are the fifth component of the logical id.
