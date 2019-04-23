@@ -4,6 +4,14 @@
 
 This script will generate a policy file for the PDS4 harvest tool.
 
+## Prerequisites
+
+This script requires the jinja2 templating enging. You can install it by running:
+
+```bash
+pip3 install jinja2
+```
+
 ## Usage
 
 ```bash
