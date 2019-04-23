@@ -1,0 +1,16 @@
+# Harvest Policy Generator
+
+## Overview
+
+This script will generate a policy file for the PDS4 harvest tool.
+
+## Usage
+
+```bash
+make_policy.py basedir baseurl bundleid collectionids...
+```
+
+`basedir` is the root directory of the bundle
+`baseurl` is the location of the archive. Include the portion just above the bundle url
+`bundleid` is the id of the bundle. This is the fourth component of the logical id.
+`collectionids` these are the ids of the collections within the bundle. They are the fifth component of the logical id.
