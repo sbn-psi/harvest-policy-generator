@@ -4,12 +4,12 @@
 
   <collections>
   {% for collection_id in collection_ids -%}
-    <file>{{ basedir }}/{{ bundle_id }}/{{ collection_id }}/collection_{{ bundle_id }}_{{ collection_id }}.xml</file>
+    <file>{{ basedir }}/{{ collection_id }}/collection_{{ bundle_id }}_{{ collection_id }}.xml</file>
   {% endfor %}
   </collections>
 
   <directories>
-    <path>{{ basedir }}/{{ bundle_id }}</path>
+    <path>{{ basedir }}</path>
     <fileFilter>
       <include>*.xml</include>
     </fileFilter>
@@ -21,11 +21,6 @@
       <offset>{{ basedir }}/</offset>
     </accessUrl>
   </accessUrls>
-
-  <checksums generate="true">
-    <manifest>{{ basedir }}/{{ bundle_id }}_checksums.txt</manifest>
-  </checksums>
-
 
   <candidates>
     <!--

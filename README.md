@@ -20,7 +20,7 @@ make_policy.py basedir baseurl bundleid collectionids...
 
 `basedir` is the root directory of the bundle
 
-`baseurl` is the location of the archive. Include the portion just above the bundle url
+`baseurl` is the url of the bundle
 
 `bundleid` is the id of the bundle. This is the fourth component of the logical id.
 
