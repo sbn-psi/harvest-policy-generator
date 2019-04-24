@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import sys
 from jinja2 import Template
+from bs4 import BeautifulSoup
+import sys
 import os
 import os.path
 import itertools
+import re
 
 with open('pds4_policy_template_jinja.txt') as template_file:
     TEMPLATE=template_file.read()
@@ -14,24 +16,32 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
 
-    if (len(argv) < 4):
+    if (len(argv) < 3):
         usage()
         return 1
         
     basedir = argv[1]
     baseurl = argv[2]
-    bundle_id = argv[3]
-    collection_files = discover_collection_files(basedir)
-    print(collection_files)
+    bundle_file = discover_files(basedir, '.*bundle.*\.xml')[0]
+    bundle_id = extract_bundle_id(bundle_file)
+    collection_files = discover_files(basedir, '.*collection.*\.xml')
     
     write_policies(basedir, baseurl, bundle_id, collection_files)
 
 def usage():
-    print('usage: make_policy.py basedir baseurl bundle_id collection_files...')
+    print('usage: make_policy.py basedir baseurl')
 
-def discover_collection_files(basedir):
+def discover_files(basedir, regex):
+    r = re.compile(regex)
     files = itertools.chain.from_iterable([[os.path.join(path, filename) for filename in filenames] for path, _, filenames in os.walk(basedir)])
-    return [f for f in files if 'collection_' in f and f.endswith('.xml')]
+    return [f for f in files if r.match(f)]
+
+def extract_bundle_id(bundle_filename):
+    with open(bundle_filename) as bundle_file:
+        soup = BeautifulSoup(bundle_file, "lxml-xml")
+        logical_id = soup.Product_Bundle.Identification_Area.logical_identifier.string
+        return logical_id.split(":")[3]
+
     
 def write_policies(basedir, baseurl, bundle_id, collection_files):
     '''
@@ -39,8 +49,7 @@ def write_policies(basedir, baseurl, bundle_id, collection_files):
     automatically determine the output file name from the bundle id.
     '''
     output_file = get_output_file(bundle_id)
-    title = get_title(bundle_id)
-    values = getValueMap(basedir, baseurl, bundle_id, collection_files, title)
+    values = getValueMap(basedir, baseurl, bundle_id, collection_files)
     write_policy(output_file, values)
     
 
@@ -48,11 +57,7 @@ def get_output_file(bundle_id):
     return './harvest-policy-' + bundle_id + '.xml'
 
 
-def get_title(bundle_id):
-    return bundle_id + ' package'
-
-
-def getValueMap(basedir, baseurl, bundle_id, collection_files, title):
+def getValueMap(basedir, baseurl, bundle_id, collection_files):
     '''
     Packages the command parameters into a dictionary that will be fed into the
     cheetah template.
@@ -60,7 +65,6 @@ def getValueMap(basedir, baseurl, bundle_id, collection_files, title):
     return {
             'basedir': basedir, 
             'bundle_id': bundle_id, 
-            'title': title, 
             'collection_files': collection_files,
             'baseurl' : baseurl
     }
