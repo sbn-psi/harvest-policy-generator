@@ -8,8 +8,7 @@ import os.path
 import itertools
 import re
 
-with open('pds4_policy_template_jinja.txt') as template_file:
-    TEMPLATE=template_file.read()
+
 
 
 def main(argv=None):
@@ -19,14 +18,20 @@ def main(argv=None):
     if (len(argv) < 3):
         usage()
         return 1
-        
+
+    scriptdir = os.path.dirname(argv[0])        
     basedir = argv[1]
     baseurl = argv[2]
     bundle_file = discover_files(basedir, '.*bundle.*\.xml')[0]
+
+    with open(os.path.join(scriptdir, 'pds4_policy_template_jinja.txt')) as template_file:
+        template=template_file.read()
+
     bundle_id = extract_bundle_id(bundle_file)
+
     collection_files = discover_files(basedir, '.*collection.*\.xml')
     
-    write_policies(basedir, baseurl, bundle_id, collection_files)
+    write_policies(basedir, baseurl, bundle_id, collection_files, template)
 
 def usage():
     print('usage: make_policy.py basedir baseurl')
@@ -43,14 +48,14 @@ def extract_bundle_id(bundle_filename):
         return logical_id.split(":")[3]
 
     
-def write_policies(basedir, baseurl, bundle_id, collection_files):
+def write_policies(basedir, baseurl, bundle_id, collection_files, template):
     '''
     Generates a policy file from the specified parameters. This will also
     automatically determine the output file name from the bundle id.
     '''
     output_file = get_output_file(bundle_id)
     values = getValueMap(basedir, baseurl, bundle_id, collection_files)
-    write_policy(output_file, values)
+    write_policy(output_file, values, template)
     
 
 def get_output_file(bundle_id):
@@ -70,12 +75,12 @@ def getValueMap(basedir, baseurl, bundle_id, collection_files):
     }
 
 
-def write_policy(output_file, values):
+def write_policy(output_file, values, template):
     '''
     Applies the supplied values to the cheetah template, and writes the result
     to a file.
     '''
-    template = Template(TEMPLATE)
+    template = Template(template)
     with open(output_file, 'w') as f:
         f.write(template.render(values))
 
