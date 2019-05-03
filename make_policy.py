@@ -22,19 +22,24 @@ def main(argv=None):
     scriptdir = os.path.dirname(argv[0])        
     basedir = argv[1]
     baseurl = argv[2]
-    bundle_file = discover_files(basedir, '.*bundle.*\.xml')[0]
 
-    with open(os.path.join(scriptdir, 'pds4_policy_template_jinja.txt')) as template_file:
-        template=template_file.read()
-
-    bundle_id = extract_bundle_id(bundle_file)
-
-    collection_files = discover_files(basedir, '.*collection.*\.xml')
-    
-    write_policies(basedir, baseurl, bundle_id, collection_files, template)
+    make_policy(scriptdir, basedir, baseurl)
 
 def usage():
     print('usage: make_policy.py basedir baseurl')
+
+def make_policy(templatedir, basedir, baseurl):
+    bundle_file = discover_files(basedir, '.*bundle.*\.xml')[0]
+
+    with open(os.path.join(templatedir, 'pds4_policy_template_jinja.txt')) as template_file:
+        template=template_file.read()
+        
+    bundle_id = extract_bundle_id(bundle_file)
+    collection_files = discover_files(basedir, '.*collection.*\.xml')
+
+    template_values = getValueMap(basedir, baseurl, bundle_id, collection_files)
+
+    write_policies(bundle_id, template_values, template)
 
 def discover_files(basedir, regex):
     r = re.compile(regex)
@@ -48,14 +53,13 @@ def extract_bundle_id(bundle_filename):
         return logical_id.split(":")[3]
 
     
-def write_policies(basedir, baseurl, bundle_id, collection_files, template):
+def write_policies(bundle_id, template_values, template):
     '''
     Generates a policy file from the specified parameters. This will also
     automatically determine the output file name from the bundle id.
     '''
     output_file = get_output_file(bundle_id)
-    values = getValueMap(basedir, baseurl, bundle_id, collection_files)
-    write_policy(output_file, values, template)
+    write_policy(output_file, template_values, template)
     
 
 def get_output_file(bundle_id):
