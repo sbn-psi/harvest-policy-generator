@@ -29,13 +29,15 @@ def usage():
     print('usage: make_policy.py basedir baseurl')
 
 def make_policy(templatedir, basedir, baseurl):
-    bundle_file = discover_files(basedir, '.*bundle.*\.xml')[0]
-
+    
     with open(os.path.join(templatedir, 'pds4_policy_template_jinja.txt')) as template_file:
         template=template_file.read()
         
-    bundle_id = extract_bundle_id(bundle_file)
+    bundle_files = discover_files(basedir, '.*bundle.*\.xml')
     collection_files = discover_files(basedir, '.*collection.*\.xml')
+
+    bundle_file = (bundle_files or collection_files)[0]
+    bundle_id = extract_bundle_id(bundle_file)
 
     template_values = getValueMap(basedir, baseurl, bundle_id, collection_files)
 
@@ -49,7 +51,8 @@ def discover_files(basedir, regex):
 def extract_bundle_id(bundle_filename):
     with open(bundle_filename) as bundle_file:
         soup = BeautifulSoup(bundle_file, "lxml-xml")
-        logical_id = soup.Product_Bundle.Identification_Area.logical_identifier.string
+        product = soup.Product_Bundle or soup.Product_Collection
+        logical_id = product.Identification_Area.logical_identifier.string
         return logical_id.split(":")[3]
 
     
