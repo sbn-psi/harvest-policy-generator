@@ -18,7 +18,7 @@
   <accessUrls registerFileUrls="false">
     <accessUrl>
       <baseUrl>{{ baseurl }}</baseUrl>
-      <offset>{{ basedir }}/</offset>
+      <offset>{{ basedir }}</offset>
     </accessUrl>
   </accessUrls>
 

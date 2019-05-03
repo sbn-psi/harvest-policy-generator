@@ -20,8 +20,8 @@ def main(argv=None):
         return 1
 
     scriptdir = os.path.dirname(argv[0])        
-    basedir = argv[1]
-    baseurl = argv[2]
+    basedir = argv[1].rstrip("/") + "/"
+    baseurl = argv[2].rstrip("/") + "/"
 
     make_policy(scriptdir, basedir, baseurl)
 
@@ -29,7 +29,6 @@ def usage():
     print('usage: make_policy.py basedir baseurl')
 
 def make_policy(templatedir, basedir, baseurl):
-    
     with open(os.path.join(templatedir, 'pds4_policy_template_jinja.txt')) as template_file:
         template=template_file.read()
         
