@@ -16,7 +16,7 @@ pip3 install beautifulsoup4
 ## Usage
 
 ```bash
-make_policy.py basedir baseurl bundleid
+make_policy.py basedir baseurl
 ```
 
 `basedir` is the root directory of the bundle
