@@ -6,11 +6,16 @@ This script will generate a policy file for the PDS4 harvest tool.
 
 ## Prerequisites
 
-This script requires the jinja2 templating engine and BeautifulSoup. You can install them by running:
+This script has the following dependencies:
+
+* jinja2 templating engine
+* BeautifulSoup
+* lxml
+
+You can install them by running:
 
 ```bash
-pip3 install jinja2
-pip3 install beautifulsoup4
+pip3 install jinja2 beautifulsoup4 lxml
 ```
 
 ## Usage
