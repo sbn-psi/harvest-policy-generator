@@ -48,7 +48,7 @@ def discover_files(basedir, regex):
     return [f for f in files if r.match(f)]
 
 def extract_bundle_id(bundle_filename):
-    with open(bundle_filename) as bundle_file:
+    with open(bundle_filename, encoding='utf-8') as bundle_file:
         soup = BeautifulSoup(bundle_file, "lxml-xml")
         product = soup.Product_Bundle or soup.Product_Collection
         logical_id = product.Identification_Area.logical_identifier.string
