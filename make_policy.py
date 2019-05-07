@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+'''
+Creates a Harvest policy file for the PDS Engineering Node's harvest tool.
+This will crawl a download PDS4 archive bundle, locate bundles and collections,
+and generate the policy file based on this.
+'''
 
 from jinja2 import Template
 from bs4 import BeautifulSoup
@@ -12,6 +17,9 @@ import re
 
 
 def main(argv=None):
+    '''
+    Main entry point into the program.
+    '''
     if argv is None:
         argv = sys.argv
 
@@ -26,9 +34,15 @@ def main(argv=None):
     make_policy(scriptdir, basedir, baseurl)
 
 def usage():
+    '''
+    Print a usage string
+    '''
     print('usage: make_policy.py basedir baseurl')
 
 def make_policy(templatedir, basedir, baseurl):
+    '''
+    This will generate a policy file based on the provided basedir and baseurl.
+    '''
     with open(os.path.join(templatedir, 'pds4_policy_template_jinja.txt')) as template_file:
         template=template_file.read()
         
@@ -43,11 +57,17 @@ def make_policy(templatedir, basedir, baseurl):
     write_policies(bundle_id, template_values, template)
 
 def discover_files(basedir, regex):
+    '''
+    Recursively locates files with a filename matching the supplied regular expression.
+    '''
     r = re.compile(regex)
     files = itertools.chain.from_iterable([[os.path.join(path, filename) for filename in filenames] for path, _, filenames in os.walk(basedir)])
     return [f for f in files if r.match(f)]
 
 def extract_bundle_id(bundle_filename):
+    '''
+    Parses a bundle or collection file and returns the bundle id.
+    '''
     with open(bundle_filename, encoding='utf-8') as bundle_file:
         soup = BeautifulSoup(bundle_file, "lxml-xml")
         product = soup.Product_Bundle or soup.Product_Collection
@@ -65,6 +85,9 @@ def write_policies(bundle_id, template_values, template):
     
 
 def get_output_file(bundle_id):
+    '''
+    Generates a filename for the policy file based on the bundle id.
+    '''
     return './harvest-policy-' + bundle_id + '.xml'
 
 
