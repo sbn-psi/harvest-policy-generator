@@ -15,7 +15,7 @@ This script has the following dependencies:
 You can install them by running:
 
 ```bash
-pip3 install jinja2 beautifulsoup4 lxml
+pip3 install -r requirements.txt
 ```
 
 ## Usage
