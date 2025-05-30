@@ -24,6 +24,8 @@ def main(argv=None):
     if len(argv) < 3:
         usage()
         return 1
+    
+    # print("Arguments: ", argv)
 
     scriptdir = os.path.dirname(argv[0])
     basedir = argv[1].rstrip("/") + "/"
@@ -47,8 +49,13 @@ def make_policy(templatedir, basedir, baseurl):
 
     bundle_files = discover_files(basedir, r'.*bundle.*\.xml')
     collection_files = discover_files(basedir, r'.*collection.*\.xml')
+    other_files = discover_files(basedir, r'.*\.xml')
+    other_files = [file for file in other_files if file not in bundle_files and file not in collection_files]
+    print("bundle_files: ", bundle_files)
+    print("collection_files: ", collection_files)
+    print("other_files: ", other_files)
 
-    bundle_file = (bundle_files or collection_files)[0]
+    bundle_file = (bundle_files or collection_files or other_files)[0]
     bundle_id = extract_bundle_id(bundle_file)
 
     template_values = get_value_map(basedir, baseurl, bundle_id, collection_files)
@@ -63,7 +70,15 @@ def discover_files(basedir, regex):
     files = itertools.chain.from_iterable([
         [os.path.join(path, filename) for filename in filenames]
         for path, _, filenames in os.walk(basedir)])
-    return [f for f in files if compiled.match(f)]
+    
+    # print all files found
+    # print("basedir: ", basedir)
+    # for path, _, filenames in os.walk(basedir):
+    #     print("path: ", path)
+    #     print("filenames: ", filenames)
+    #     for filename in filenames:
+    #         print(os.path.join(path, filename))
+    return [file for file in files if compiled.match(file)]
 
 def extract_bundle_id(bundle_filename):
     '''
@@ -71,7 +86,7 @@ def extract_bundle_id(bundle_filename):
     '''
     with open(bundle_filename, encoding='utf-8') as bundle_file:
         soup = BeautifulSoup(bundle_file, "lxml-xml")
-        product = soup.Product_Bundle or soup.Product_Collection
+        product = soup.Product_Bundle or soup.Product_Collection or soup.Product_Context
         logical_id = product.Identification_Area.logical_identifier.string
         return logical_id.split(":")[3]
 

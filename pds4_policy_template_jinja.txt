@@ -5,11 +5,13 @@
   xmlns:harvest="https://pds.nasa.gov/software/pds4/harvest/v1"
   xsi:schemaLocation="https://pds.nasa.gov/software/pds4/harvest/v1 https://pds.nasa.gov/software/pds4/harvest/v1/harvest-policy.xsd">
 
+  {% if collection_files is defined and collection_files | length > 0 %}
   <collections>
   {% for collection_file in collection_files -%}
     <file>{{ collection_file }}</file>
   {% endfor %}
   </collections>
+  {% endif %}
 
   <directories>
     <path>{{ basedir }}</path>
@@ -688,6 +690,151 @@
       <xPath harvest:slotName="file_name">
         //File_Area_XML_Schema/File/file_name
       </xPath>
+    </productMetadata>
+    <productMetadata harvest:objectType="Product_Context">
+      <!-- Identification_Area -->
+      <xPath harvest:slotName="information_model_version">
+        //Identification_Area/information_model_version
+      </xPath>
+      <xPath harvest:slotName="product_class">
+        //Identification_Area/product_class
+      </xPath>
+      <xPath harvest:slotName="alternate_id">
+        //Identification_Area/Alias_List/Alias/alternate_id
+      </xPath>
+      <xPath harvest:slotName="alternate_title">
+        //Identification_Area/Alias_List/Alias/alternate_title
+      </xPath>
+      <xPath harvest:slotName="citation_author_list">
+        //Identification_Area/Citation_Information/author_list
+      </xPath>
+      <xPath harvest:slotName="citation_editor_list">
+        //Identification_Area/Citation_Information/editor_list
+      </xPath>
+      <xPath harvest:slotName="citation_publication_year">
+        //Identification_Area/Citation_Information/publication_year
+      </xPath>
+      <xPath harvest:slotName="citation_keyword">
+        //Identification_Area/Citation_Information/keyword
+      </xPath>
+      <xPath harvest:slotName="citation_description">
+        //Identification_Area/Citation_Information/description
+      </xPath>
+       <xPath harvest:slotName="citation_doi">
+        //Identification_Area/Citation_Information/doi
+      </xPath>        
+      <xPath harvest:slotName="modification_date">
+        //Identification_Area/Modification_History/Modification_Detail/modification_date
+      </xPath>
+      <xPath harvest:slotName="modification_version_id">
+        //Identification_Area/Modification_History/Modification_Detail/version_id
+      </xPath>
+      <xPath harvest:slotName="modification_description">
+        //Identification_Area/Modification_History/Modification_Detail/description
+      </xPath>
+      <!-- Discipline_Area -->
+      <!-- Reference_List -->
+      <xPath harvest:slotName="external_reference_doi">
+        //Reference_List/External_Reference/doi
+      </xPath>
+      <xPath harvest:slotName="external_reference_text">
+        //Reference_List/External_Reference/reference_text
+      </xPath>
+      <xPath harvest:slotName="external_reference_description">
+        //Reference_List/External_Reference/description
+      </xPath>
+      <xPath harvest:slotName="source_product_curating_facility">
+        //Reference_List/Source_Product_External/curating_facility
+      </xPath>
+      <xPath harvest:slotName="source_product_description">
+        //Reference_List/Source_Product_External/description
+      </xPath>
+      <xPath harvest:slotName="source_product_doi">
+        //Reference_List/Source_Product_External/doi
+      </xPath>
+      <xPath harvest:slotName="source_product_identifier">
+        //Reference_List/Source_Product_External/external_source_product_identifier
+      </xPath>
+      <xPath harvest:slotName="source_product_reference_type">
+        //Reference_List/Source_Product_External/reference_type
+      </xPath>      
+      <!-- Agency -->
+      <xPath harvest:slotName="agency_name">//Agency/name</xPath>
+      <xPath harvest:slotName="agency_description">//Agency/description</xPath>
+      <!-- Airborne -->
+      <xPath harvest:slotName="airborne_name">//Airborne/name</xPath>
+      <xPath harvest:slotName="airborne_type">//Airborne/type</xPath>
+      <xPath harvest:slotName="airborne_description">//Airborne/description</xPath>      
+      <!-- Facility -->
+      <xPath harvest:slotName="facility_name">//Facility/name</xPath>
+      <xPath harvest:slotName="facility_type">//Facility/type</xPath>
+      <xPath harvest:slotName="facility_address">//Facility/address</xPath>
+      <xPath harvest:slotName="facility_country">//Facility/country</xPath>
+      <xPath harvest:slotName="facility_description">//Facility/description</xPath>
+      <!-- Instrument -->
+      <xPath harvest:slotName="instrument_name">//Instrument/name</xPath>
+      <xPath harvest:slotName="instrument_type">//Instrument/type</xPath>
+      <xPath harvest:slotName="instrument_description">//Instrument/description</xPath>
+      <xPath harvest:slotName="instrument_model_id">//Instrument/model_id</xPath>
+      <xPath harvest:slotName="instrument_naif_id">//Instrument/naif_instrument_id</xPath>
+      <xPath harvest:slotName="instrument_serial_number">//Instrument/serial_number</xPath>
+      <!-- Instrument_Host -->
+      <xPath harvest:slotName="instrument_host_name">//Instrument_Host/name</xPath>
+      <!-- Version 1.1.0.1 or earlier for version identifier -->
+      <xPath harvest:slotName="instrument_host_version_id">//Instrument_Host/version_id</xPath>
+      <!-- Version 1.2.0.0 or later for version identifier -->
+      <xPath harvest:slotName="instrument_host_version_id">//Instrument_Host/instrument_host_version_id</xPath>
+      <xPath harvest:slotName="instrument_host_type">//Instrument_Host/type</xPath>
+      <xPath harvest:slotName="instrument_host_description">//Instrument_Host/description</xPath>
+      <xPath harvest:slotName="instrument_host_naif_id">//Instrument_Host/naif_host_id</xPath>
+      <xPath harvest:slotName="instrument_host_serial_number">//Instrument_Host/serial_number</xPath>
+      <!-- Investigation -->
+      <xPath harvest:slotName="investigation_name">//Investigation/name</xPath>
+      <xPath harvest:slotName="investigation_type">//Investigation/type</xPath>
+      <xPath harvest:slotName="investigation_description">//Investigation/description</xPath>
+      <xPath harvest:slotName="investigation_start_date">//Investigation/start_date</xPath>
+      <xPath harvest:slotName="investigation_stop_date">//Investigation/stop_date</xPath>
+      <!-- Node -->
+      <xPath harvest:slotName="node_name">//Node/name</xPath>
+      <xPath harvest:slotName="node_description">//Node/description</xPath>
+      <xPath harvest:slotName="node_institution_name">//Node/institution_name</xPath>
+      <!-- Other -->
+      <xPath harvest:slotName="other_description">//Other/description</xPath>
+      <!-- PDS_Affiliate -->
+      <xPath harvest:slotName="person_name">//PDS_Affiliate/name</xPath>
+      <xPath harvest:slotName="person_registration_date">//PDS_Affiliate/registration_date</xPath>
+      <xPath harvest:slotName="person_electronic_mail_address">//PDS_Affiliate/electronic_mail_address</xPath>
+      <xPath harvest:slotName="person_sort_name">//PDS_Affiliate/sort_name</xPath>
+      <xPath harvest:slotName="person_description">//PDS_Affiliate/description</xPath>
+      <xPath harvest:slotName="person_affiliation_type">//PDS_Affiliate/affiliation_type</xPath>
+      <xPath harvest:slotName="person_alternate_telephone_number">//PDS_Affiliate/alternate_telephone_number</xPath>
+      <xPath harvest:slotName="person_institution_name">//PDS_Affiliate/institution_name</xPath>
+      <xPath harvest:slotName="person_phone_book_flag">//PDS_Affiliate/phone_book_flag</xPath>
+      <xPath harvest:slotName="person_postal_address_text">//PDS_Affiliate/postal_address_text</xPath>
+      <xPath harvest:slotName="person_team_name">//PDS_Affiliate/team_name</xPath>
+      <xPath harvest:slotName="person_telephone_number">//PDS_Affiliate/telephone_number</xPath>
+      <!-- PDS_Guest -->
+      <xPath harvest:slotName="person_name">//PDS_Guest/name</xPath>
+      <xPath harvest:slotName="person_registration_date">//PDS_Guest/registration_date</xPath>
+      <xPath harvest:slotName="person_electronic_mail_address">//PDS_Guest/electronic_mail_address</xPath>
+      <xPath harvest:slotName="person_sort_name">//PDS_Guest/sort_name</xPath>
+      <xPath harvest:slotName="person_description">//PDS_Guest/description</xPath>
+      <!-- Resource -->
+      <xPath harvest:slotName="resource_name">//Resource/name</xPath>
+      <xPath harvest:slotName="resource_type">//Resource/type</xPath>
+      <xPath harvest:slotName="resource_description">//Resource/description</xPath>
+      <xPath harvest:slotName="resource_url">//Resource/url</xPath>
+      <!-- Target -->
+      <xPath harvest:slotName="target_name">//Target/name</xPath>
+      <xPath harvest:slotName="target_type">//Target/type</xPath>
+      <xPath harvest:slotName="target_description">//Target/description</xPath>
+      <!-- Telescope -->
+      <xPath harvest:slotName="telescope_aperture">//Telescope/aperture</xPath>
+      <xPath harvest:slotName="telescope_longitude">//Telescope/telescope_longitude</xPath>
+      <xPath harvest:slotName="telescope_latitude">//Telescope/telescope_latitude</xPath>
+      <xPath harvest:slotName="telescope_altitude">//Telescope/altitude</xPath>
+      <xPath harvest:slotName="telescope_coordinate_source">//Telescope/coordinate_source</xPath>
+      <xPath harvest:slotName="telescope_description">//Telescope/description</xPath>
     </productMetadata>
   </candidates>
 </policy>
